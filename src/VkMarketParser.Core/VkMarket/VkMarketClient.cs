@@ -9,10 +9,10 @@ public class VkMarketClient : IVkMarketClient
     private readonly IVkMarketClientConfiguration _configuration;
     private readonly VkApi _vk;
     
-    public VkMarketClient(IVkMarketClientConfiguration configuration)
+    public VkMarketClient(IVkMarketClientConfiguration configuration, VkApi vkApi)
     {
         _configuration = configuration;
-        _vk = new VkApi();
+        _vk = vkApi;
     }
 
     public async Task AuthorizeAsync()
