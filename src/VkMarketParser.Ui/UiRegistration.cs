@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using VkMarketParser.Core.VkMarket;
+using VkMarketParser.Core;
 
 namespace VkMarketParser;
 
@@ -10,7 +10,7 @@ public static class UiRegistration
     {
         services
             .AddSingleton(ConfigurationFactory)
-            .AddSingleton(VkMarketClientConfigurationFactory)
+            .AddSingleton(VkMarketClientConfigurationFactory.Create)
             .AddSingleton<Program>();
         
         return services;
@@ -21,12 +21,4 @@ public static class UiRegistration
         .AddJsonFile("appsettings.json", true, true)
         .AddUserSecrets<Startup>()
         .Build();
-
-    private static IVkMarketClientConfiguration VkMarketClientConfigurationFactory(IServiceProvider services)
-    {
-        var config = services.GetRequiredService<IConfiguration>();
-        var vkConfig = config.GetSection("VkMarketClientConfiguration").Get<VkMarketClientConfiguration>();
-        if (vkConfig is null) throw new InvalidCastException();
-        return vkConfig;
-    }
 }
