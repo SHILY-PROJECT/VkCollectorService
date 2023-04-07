@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VkMarketParser", "VkMarketParser\VkMarketParser.csproj", "{4E8D23D3-FB37-4305-9FB8-B560EC11B3FD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6820B1A4-619E-43D1-9EAD-22887CE8DEC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VkMarketParser", "src\VkMarketParser\VkMarketParser.csproj", "{BCE7A5DA-CA06-41D2-BE6B-4BE7D3E62310}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +13,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4E8D23D3-FB37-4305-9FB8-B560EC11B3FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E8D23D3-FB37-4305-9FB8-B560EC11B3FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E8D23D3-FB37-4305-9FB8-B560EC11B3FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E8D23D3-FB37-4305-9FB8-B560EC11B3FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCE7A5DA-CA06-41D2-BE6B-4BE7D3E62310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCE7A5DA-CA06-41D2-BE6B-4BE7D3E62310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCE7A5DA-CA06-41D2-BE6B-4BE7D3E62310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCE7A5DA-CA06-41D2-BE6B-4BE7D3E62310}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DDEE7E39-3054-45EB-8A81-66E5B19FE54A}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BCE7A5DA-CA06-41D2-BE6B-4BE7D3E62310} = {6820B1A4-619E-43D1-9EAD-22887CE8DEC7}
 	EndGlobalSection
 EndGlobal
