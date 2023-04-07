@@ -5,10 +5,11 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>VkMarketParser</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="VkNet" Version="1.72.0" />
+    <ProjectReference Include="..\VkMarketParser.Core\VkMarketParser.Core.csproj" />
   </ItemGroup>
 
 </Project>
