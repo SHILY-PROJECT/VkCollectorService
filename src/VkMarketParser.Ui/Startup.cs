@@ -1,14 +1,15 @@
-﻿using VkMarketParser;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using VkMarketParser.Core;
 
-var groupLink = "";
-var config = new VkMarketClientConfiguration
+namespace VkMarketParser;
+
+public class Startup
 {
-    AppId = 0,
-    Login = "",
-    Password = ""
-};
-var client = new VkMarketClient(config);
-await client.AuthorizeAsync();
-var products = await client.GetProductsAsync(groupLink, 500);
+    public static async Task Main() =>
+        await CreateBuilder().Build().Services.GetRequiredService<Program>().RunAsync();
 
-Console.ReadKey();
+    private static IHostBuilder CreateBuilder() => Host
+        .CreateDefaultBuilder()
+        .ConfigureServices(s => s.AddCore().AddUi());
+}
