@@ -2,14 +2,14 @@
 using VkNet.Enums.Filters;
 using VkNet.Model;
 
-namespace VkMarketParser;
+namespace VkMarketParser.Core.VkMarket;
 
-public class VkMarketClient
+public class VkMarketClient : IVkMarketClient
 {
-    private readonly VkMarketClientConfiguration _configuration;
+    private readonly IVkMarketClientConfiguration _configuration;
     private readonly VkApi _vk;
     
-    public VkMarketClient(VkMarketClientConfiguration configuration)
+    public VkMarketClient(IVkMarketClientConfiguration configuration)
     {
         _configuration = configuration;
         _vk = new VkApi();
