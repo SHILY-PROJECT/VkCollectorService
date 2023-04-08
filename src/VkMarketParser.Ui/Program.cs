@@ -13,9 +13,10 @@ public class Program
     
     public async Task RunAsync()
     {
-        var groupLink = "";
-        
+        var groupLinkOrNameOrId = "";
+
+        var group = groupLinkOrNameOrId.Contains("http") ? Path.GetFileName(groupLinkOrNameOrId) : groupLinkOrNameOrId;
         await _client.AuthorizeAsync();
-        var products = await _client.GetProductsAsync(groupLink, 500);
+        var products = await _client.GetProductsAsync(group, 500);
     }
 }
