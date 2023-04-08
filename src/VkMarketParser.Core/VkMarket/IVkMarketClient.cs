@@ -5,5 +5,5 @@ namespace VkMarketParser.Core.VkMarket;
 public interface IVkMarketClient
 {
     Task AuthorizeAsync();
-    Task<List<Market>> GetProductsAsync(string groupLink, int maxCount);
+    Task<List<Product>> GetProductsAsync(string groupNameOrId, int maxCount);
 }
