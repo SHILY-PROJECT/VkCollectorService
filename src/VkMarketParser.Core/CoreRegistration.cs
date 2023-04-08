@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using VkMarketParser.Core.ResultWriter;
 using VkMarketParser.Core.VkMarket;
 using VkNet;
 
@@ -12,7 +13,8 @@ public static class CoreRegistration
             .AddAutoMapper(typeof(MapperProfile))
             .AddSingleton<IVkMarketClientConfiguration, VkMarketClientConfiguration>()
             .AddScoped<IVkMarketClient, VkMarketClient>()
-            .AddScoped<VkApi>(_ => new VkApi());
+            .AddScoped<VkApi>(_ => new VkApi())
+            .AddScoped<IResultWriter<Product>, ExcelResultWriter>();
         
         return service;
     }

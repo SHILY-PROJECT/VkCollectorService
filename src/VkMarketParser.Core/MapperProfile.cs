@@ -16,8 +16,7 @@ public class MapperProfile : Profile
             {
                 cfg.PreCondition(m =>  m.Photos is not null && m.Photos.Any() && m.Photos.Select(p => p.Sizes).Any());
                 cfg.MapFrom(m => m.Photos.Select(p => p.Sizes.Last().Url.AbsoluteUri).ToList());
-            })
-            .ForMember(p => p.Likes, cfg => cfg.MapFrom(m => m.Likes.Count));
+            });
         
         CreateMap<VkMarketClientConfiguration, VkMarketClientConfiguration>()
             .ForAllMembers(cfg => cfg.Condition((src, dest, srcMember) => src.Login == dest.Login && src.Password == dest.Password && src.AppId == dest.AppId));
