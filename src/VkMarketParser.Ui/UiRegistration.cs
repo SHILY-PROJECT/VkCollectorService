@@ -6,10 +6,13 @@ namespace VkMarketParser;
 
 public static class UiRegistration
 {
+    private const string SettingsFileName = "appsettings.json";
+    
     public static IServiceCollection AddUi(this IServiceCollection services)
     {
         services
             .AddSingleton(ConfigurationFactory)
+            .AddSingleton(EnvironmentConfigurationFactory)
             .AddSingleton(VkMarketClientConfigurationFactory.Create)
             .AddSingleton<Program>();
         
@@ -18,7 +21,14 @@ public static class UiRegistration
     
     private static IConfiguration ConfigurationFactory() => new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json", true, true)
+        .AddJsonFile(SettingsFileName, true, true)
         .AddUserSecrets<Startup>()
         .Build();
+
+    private static EnvironmentConfiguration EnvironmentConfigurationFactory(IServiceProvider services)
+    {
+        var config = services.GetRequiredService<IConfiguration>();
+        var environmentConfig = new EnvironmentConfiguration(config, Directory.GetCurrentDirectory(), SettingsFileName);
+        return environmentConfig;
+    }
 }
