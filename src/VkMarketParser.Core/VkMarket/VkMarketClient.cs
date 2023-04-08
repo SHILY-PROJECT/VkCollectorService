@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using AutoMapper;
 using Newtonsoft.Json;
+using VkMarketParser.Core.ResultWriter;
 using VkNet;
 using VkNet.Enums.Filters;
 using VkNet.Model;
@@ -13,15 +14,22 @@ public class VkMarketClient : IVkMarketClient
     private readonly VkApi _vk;
     private readonly IMapper _mapper;
     private readonly EnvironmentConfiguration _env;
-
-    public VkMarketClient(IVkMarketClientConfiguration vkServiceConfiguration, VkApi vkApi, IMapper mapper, EnvironmentConfiguration configuration)
+    private readonly IResultWriter<Product> _resultWriter;
+    
+    public VkMarketClient(
+        IVkMarketClientConfiguration vkServiceConfiguration,
+        VkApi vkApi,
+        IMapper mapper,
+        EnvironmentConfiguration configuration,
+        IResultWriter<Product> resultWriter)
     {
         _vkServiceConfiguration = vkServiceConfiguration;
         _vk = vkApi;
         _mapper = mapper;
         _env = configuration;
+        _resultWriter = resultWriter;
     }
-
+    
     public async Task AuthorizeAsync()
     {
         var task = _vkServiceConfiguration.AccessToken switch
@@ -31,7 +39,7 @@ public class VkMarketClient : IVkMarketClient
         };
         await task;
     }
-
+    
     public async Task<List<Product>> GetProductsAsync(string groupNameOrId, int maxCount)
     {
         var group = (await _vk.Groups.GetByIdAsync(null, groupNameOrId, GroupsFields.All)).First();
@@ -50,9 +58,18 @@ public class VkMarketClient : IVkMarketClient
             offset += items.Count;
         }
         
-        return allItems; 
+        return allItems;
     }
-
+    
+    public async Task<ProductResult> GetProductsAsync(string groupNameOrId, int maxCount, bool saveToExcel)
+    {
+        var products = await this.GetProductsAsync(groupNameOrId, maxCount);
+        if (!saveToExcel) return new ProductResult { Products = products };
+        var fullName = Path.Combine(_env.CurrentDirectory, "result", $"{groupNameOrId}   result   {DateTime.Now:yyyy-MM-dd   HH-mm-ss---fffffff}.xlsx");
+        await _resultWriter.WriteAsync(products, fullName);
+        return new ProductResult { ResultFillName = fullName, Products = products };
+    }
+    
     private async Task AuthUseLoginAndPasswordAsync()
     {
         await _vk.AuthorizeAsync(new ApiAuthParams
@@ -70,7 +87,7 @@ public class VkMarketClient : IVkMarketClient
         await _vk.AuthorizeAsync(new ApiAuthParams { AccessToken = _vkServiceConfiguration.AccessToken });
         this.SaveOrRefreshAccessToken();
     }
-
+    
     private void SaveOrRefreshAccessToken()
     {
         _vkServiceConfiguration.AccessToken = _vk.Token;
