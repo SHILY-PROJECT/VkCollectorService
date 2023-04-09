@@ -1,4 +1,5 @@
 ﻿using VkMarketParser.Core.VkMarket;
+using VkNet.Exception;
 
 namespace VkMarketParser;
 
@@ -13,10 +14,57 @@ public class Program
     
     public async Task RunAsync()
     {
-        var groupLinkOrNameOrId = "";
+        int maxCount;
+        string groupLinkOrNameOrId;
+        
+        while (true)
+        {
+            Console.WriteLine("Введите ссылку на группу: ");
+            groupLinkOrNameOrId = Console.ReadLine();
+            
+            if (string.IsNullOrWhiteSpace(groupLinkOrNameOrId)) continue;
+            
+            Console.Clear();
+            break;
+        }
+        while (true)
+        {
+            Console.WriteLine("Введите макисмальное количество товаров которое нужно спарсить: ");
+            
+            if (!int.TryParse(Console.ReadLine(), out maxCount) && maxCount <= 0) continue;
+            
+            Console.Clear();
+            break;
+        }
 
         var group = groupLinkOrNameOrId.Contains("http") ? Path.GetFileName(groupLinkOrNameOrId) : groupLinkOrNameOrId;
-        await _client.AuthorizeAsync();
-        var products = await _client.GetProductsAsync(group, 500);
+
+        while (true)
+        {
+            try
+            {
+                Console.WriteLine($"Авторизация аккаунта '{_client.CurrentAccount}'...");
+                await _client.AuthorizeAsync();
+                Console.WriteLine($"Авторизация аккаунта '{_client.CurrentAccount}' прошла успешно!");
+
+                Console.WriteLine($"Запуск парсинга товаров группы '{groupLinkOrNameOrId}'...");
+                var productsResult = await _client.GetProductsAsync(group, maxCount, true);
+                Console.WriteLine($"Парсинг группы '{groupLinkOrNameOrId}' успешно завершен!");
+                Console.WriteLine($"Файл с результатом: {productsResult.ResultFillName}");
+            }
+            catch (UserAuthorizationFailException ex)
+            {
+                Console.WriteLine($"ERROR: {ex.Message}");
+                _client.DestroyAccessToken();
+                continue;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ERROR: {ex.Message}");
+            }
+            break;
+        }
+
+        Console.ReadKey();
     }
 }

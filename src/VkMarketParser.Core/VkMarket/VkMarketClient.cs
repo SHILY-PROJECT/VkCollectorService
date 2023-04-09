@@ -29,7 +29,9 @@ public class VkMarketClient : IVkMarketClient
         _env = configuration;
         _resultWriter = resultWriter;
     }
-    
+
+    public string CurrentAccount => _vkServiceConfiguration.Login;
+
     public async Task AuthorizeAsync()
     {
         var task = _vkServiceConfiguration.AccessToken switch
@@ -52,6 +54,7 @@ public class VkMarketClient : IVkMarketClient
         {
             var items = await _vk.Markets.GetAsync(-group.Id, null, count, offset, true);
             allItems.AddRange(_mapper.Map<List<Product>>(items));
+            Console.WriteLine($"Прогресс: {allItems.Count} из {((ulong)maxCount > items.TotalCount ? items.TotalCount : maxCount)}");
             
             if ((ulong)allItems.Count >= items.TotalCount || allItems.Count >= maxCount) break;
             
@@ -69,7 +72,9 @@ public class VkMarketClient : IVkMarketClient
         await _resultWriter.WriteAsync(products, fullName);
         return new ProductResult { ResultFillName = fullName, Products = products };
     }
-    
+
+    public void DestroyAccessToken() => _vkServiceConfiguration.AccessToken = string.Empty;
+
     private async Task AuthUseLoginAndPasswordAsync()
     {
         await _vk.AuthorizeAsync(new ApiAuthParams
