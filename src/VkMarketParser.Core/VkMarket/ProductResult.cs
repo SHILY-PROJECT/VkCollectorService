@@ -1,7 +1,7 @@
 namespace VkMarketParser.Core.VkMarket;
 
-public class ProductResult
+public record ProductResult
 {
-    public string ResultFillName { get; set; }
-    public List<Product> Products { get; set; }
+    public string ResultFillName { get; init; }
+    public List<Product> Products { get; init; }
 }

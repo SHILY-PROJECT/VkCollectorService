@@ -1,9 +1,9 @@
 namespace VkMarketParser.Core.VkMarket;
 
-public class Product
+public record Product
 {
-    public string Name { get; set; }
-    public string Link { get; set; }
-    public string Description { get; set; }
-    public List<string> Images { get; set; }
+    public string Name { get; init; }
+    public string Link { get; init; }
+    public string Description { get; init; }
+    public List<string> Images { get; init; }
 }
