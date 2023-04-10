@@ -12,6 +12,7 @@ public class MapperProfile : Profile
             .ForMember(p => p.Name, cfg => cfg.MapFrom(m => m.Title))
             .ForMember(p => p.Link, cfg => cfg.MapFrom(m => $"https://vk.com/market{m.OwnerId}_{m.Id}"))
             .ForMember(p => p.Description, cfg => cfg.MapFrom(m => m.Description))
+            .ForMember(p => p.Category, cfg => cfg.MapFrom(m => m.Category.Name))
             .ForMember(p => p.Images, cfg =>
             {
                 cfg.PreCondition(m =>  m.Photos is not null && m.Photos.Any() && m.Photos.Select(p => p.Sizes).Any());
