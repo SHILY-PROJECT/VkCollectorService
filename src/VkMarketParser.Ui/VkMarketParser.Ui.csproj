@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>VkMarketParser</RootNamespace>
+	<PublishSingleFile>true</PublishSingleFile>
+	<AssemblyName>VkMarketParser</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

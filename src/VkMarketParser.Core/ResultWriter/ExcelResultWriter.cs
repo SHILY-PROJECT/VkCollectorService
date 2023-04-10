@@ -23,7 +23,8 @@ public class ExcelResultWriter : IResultWriter<Product>
                 worksheet.Cells[row, 2].Value = product.Link;
                 worksheet.Cells[row, 3].Value = product.Description;
                 worksheet.Cells[row, 4].Value = string.Join(",", product.Images);
-                
+                worksheet.Cells[row, 5].Value = product.Price;
+
                 row++;
             }
 
@@ -40,6 +41,7 @@ public class ExcelResultWriter : IResultWriter<Product>
         excelWorksheet.Cells[1, 2].Value = "LINK";
         excelWorksheet.Cells[1, 3].Value = "DESCRIPTION";
         excelWorksheet.Cells[1, 4].Value = "IMAGES";
+        excelWorksheet.Cells[1, 5].Value = "PRICE";
     }
 
     private static void OpenDir(string fullName)
