@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using AutoMapper;
 using Newtonsoft.Json;
+using VkMarketParser.Core.Notifications;
 using VkMarketParser.Core.ResultWriter;
 using VkNet;
 using VkNet.Enums.Filters;
@@ -15,6 +16,7 @@ public class VkMarketClient : IVkMarketClient
     private readonly IMapper _mapper;
     private readonly EnvironmentConfiguration _env;
     private readonly IResultWriter<Product> _resultWriter;
+    private readonly INotifier _notifier;
     
     public VkMarketClient(
         IVkMarketClientConfiguration vkServiceConfiguration,
@@ -54,7 +56,8 @@ public class VkMarketClient : IVkMarketClient
         {
             var items = await _vk.Markets.GetAsync(-group.Id, null, count, offset, true);
             allItems.AddRange(_mapper.Map<List<Product>>(items));
-            Console.WriteLine($"Прогресс: {allItems.Count} из {((ulong)maxCount > items.TotalCount ? items.TotalCount : maxCount)}");
+
+            _notifier.Notify($"Прогресс: {allItems.Count} из {((ulong)maxCount > items.TotalCount ? items.TotalCount : maxCount)}");
             
             if ((ulong)allItems.Count >= items.TotalCount || allItems.Count >= maxCount) break;
             
@@ -67,10 +70,13 @@ public class VkMarketClient : IVkMarketClient
     public async Task<ProductResult> GetProductsAsync(string groupNameOrId, int maxCount, bool saveToExcel)
     {
         var products = await this.GetProductsAsync(groupNameOrId, maxCount);
+        
         if (!saveToExcel) return new ProductResult { Products = products };
+        
         var fullName = Path.Combine(_env.CurrentDirectory, "result", $"{groupNameOrId}   result   {DateTime.Now:yyyy-MM-dd   HH-mm-ss---fffffff}.xlsx");
         await _resultWriter.WriteAsync(products, fullName);
-        return new ProductResult { ResultFillName = fullName, Products = products };
+        
+        return new ProductResult { FillNameResult = fullName, Products = products };
     }
 
     public void DestroyAccessToken() => _vkServiceConfiguration.AccessToken = string.Empty;

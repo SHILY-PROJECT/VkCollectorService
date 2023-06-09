@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VkMarketParser.Core;
+using VkMarketParser.Core.Notifications;
 
 namespace VkMarketParser;
 
-public static class UiRegistration
+public static class UIRegistration
 {
     private const string SettingsFileName = "appsettings.json";
     
@@ -14,7 +15,8 @@ public static class UiRegistration
             .AddSingleton(ConfigurationFactory)
             .AddSingleton(EnvironmentConfigurationFactory)
             .AddSingleton(VkMarketClientConfigurationFactory.Create)
-            .AddSingleton<Program>();
+            .AddSingleton<Program>()
+            .AddSingleton<INotifier, UiNotifier>();
         
         return services;
     }
