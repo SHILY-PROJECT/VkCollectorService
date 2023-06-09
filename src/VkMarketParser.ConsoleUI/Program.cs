@@ -50,7 +50,7 @@ public class Program
                 Console.WriteLine($"Запуск парсинга товаров группы '{groupLinkOrNameOrId}'...");
                 var productsResult = await _client.GetProductsAsync(group, maxCount, true);
                 Console.WriteLine($"Парсинг группы '{groupLinkOrNameOrId}' успешно завершен!");
-                Console.WriteLine($"Файл с результатом: {productsResult.ResultFillName}");
+                Console.WriteLine($"Файл с результатом: {productsResult.FillNameResult}");
             }
             catch (UserAuthorizationFailException ex)
             {
