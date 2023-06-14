@@ -49,12 +49,12 @@ public class VkMarketClient : IVkMarketClient
         var group = (await _vk.Groups.GetByIdAsync(null, groupNameOrId, GroupsFields.All)).First();
         
         var offset = 0;
-        var count = 200 > maxCount ? maxCount : 200;
+        var maxNumberOfItemsAtTime = 200 > maxCount ? maxCount : 200;
         var allItems = new List<Product>();
         
         while (true)
         {
-            var items = await _vk.Markets.GetAsync(-group.Id, null, count, offset, true);
+            var items = await _vk.Markets.GetAsync(-group.Id, null, maxNumberOfItemsAtTime, offset, true);
             allItems.AddRange(_mapper.Map<List<Product>>(items));
 
             _notifier.Notify($"Прогресс: {allItems.Count} из {((ulong)maxCount > items.TotalCount ? items.TotalCount : maxCount)}");

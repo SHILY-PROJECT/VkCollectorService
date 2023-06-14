@@ -5,7 +5,7 @@ using VkMarketParser.Core.Notifications;
 
 namespace VkMarketParser;
 
-public static class UIRegistration
+public static class ConsoleUIRegistration
 {
     private const string SettingsFileName = "appsettings.json";
     
@@ -16,7 +16,7 @@ public static class UIRegistration
             .AddSingleton(EnvironmentConfigurationFactory)
             .AddSingleton(VkMarketClientConfigurationFactory.Create)
             .AddSingleton<Program>()
-            .AddSingleton<INotifier, UiNotifier>();
+            .AddSingleton<INotifier, ConsoleUINotifier>();
         
         return services;
     }
