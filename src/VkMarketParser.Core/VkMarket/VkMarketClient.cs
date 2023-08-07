@@ -23,13 +23,15 @@ public class VkMarketClient : IVkMarketClient
         VkApi vkApi,
         IMapper mapper,
         EnvironmentConfiguration configuration,
-        IResultWriter<Product> resultWriter)
+        IResultWriter<Product> resultWriter,
+        INotifier notifier)
     {
         _vkServiceConfiguration = vkServiceConfiguration;
         _vk = vkApi;
         _mapper = mapper;
         _env = configuration;
         _resultWriter = resultWriter;
+        _notifier = notifier;
     }
 
     public string CurrentAccount => _vkServiceConfiguration.Login;
